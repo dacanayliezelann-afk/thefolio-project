@@ -1,0 +1,7 @@
+/* frontend/src/pages/SplashPage.css */
+/* Scroll lock handled via body.splash-active in App.css */
+
+.fade-out {
+  opacity:    0 !important;
+  transition: opacity 0.5s ease-out;
+}
