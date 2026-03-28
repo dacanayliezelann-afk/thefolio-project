@@ -1,7 +1,7 @@
 // frontend/src/api/axios.js
 import axios from 'axios';
 
-// Backend root (no /api). Local: http://localhost:5000. On Vercel set REACT_APP_API_URL to your deployed API origin.
+// Backend root (no /api). Local: http://localhost:5000. On Vercel set REACT_APP_API_URL.
 const API_ROOT = (process.env.REACT_APP_API_URL || 'http://localhost:5000')
   .replace(/\/$/, '')
   .replace(/\/api$/, '');
