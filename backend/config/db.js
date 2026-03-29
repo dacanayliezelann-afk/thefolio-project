@@ -3,8 +3,13 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
   try {
-    const atlasURI = "mongodb+srv://<db_username>:<db_password>@cluster0.0xqwwhe.mongodb.net/?appName=Cluster0";
+    // Use the environment variable, or fall back to a local string for development
+    const atlasURI = process.env.MONGO_URI; 
     
+    if (!atlasURI) {
+      throw new Error("MONGO_URI is not defined in environment variables");
+    }
+
     const conn = await mongoose.connect(atlasURI); 
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
