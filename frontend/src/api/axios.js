@@ -1,8 +1,10 @@
 // frontend/src/api/axios.js
 import axios from 'axios';
 
+const baseURL = import.meta.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api',  // ← must match your backend port
+  baseURL: baseURL, 
 });
 
 // Attach the JWT token to every request automatically
