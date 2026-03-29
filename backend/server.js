@@ -14,7 +14,10 @@ const app=express();
 connectDB(); //ConnecttoMongoDB
 //──Middleware─────────────────────────────────────────────────
 //AllowReact(port3000)tocall this server
-app.use(cors({origin:'http://localhost:3000', credentials: true }));
+const origin = process.env.NODE_ENV === 'production' 
+  ? 'https://your-frontend-url.onrender.com' 
+  : 'http://localhost:3000';
+app.use(cors({ origin, credentials: true }));
 //ParseincomingJSONrequestbodies
 app.use(express.json());
 //Serveuploadedimagefilesaspublic URLs
