@@ -14,21 +14,12 @@ const app=express();
 connectDB(); //ConnecttoMongoDB
 //──Middleware─────────────────────────────────────────────────
 // Allow BOTH localhost (for your testing) AND Vercel (for the live site)
-const allowedOrigins = [
-  'http://localhost:3000',
-  'https://thefolio-project-six.vercel.app'
-];
+// In backend/server.js
+const origin = process.env.NODE_ENV === 'production' 
+  ? 'https://thefolio-project-six.vercel.app' 
+  : 'http://localhost:3000';
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true
-}));
+app.use(cors({ origin, credentials: true }));
 //ParseincomingJSONrequestbodies
 app.use(express.json());
 //Serveuploadedimagefilesaspublic URLs
