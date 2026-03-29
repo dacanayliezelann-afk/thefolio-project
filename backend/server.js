@@ -13,10 +13,22 @@ const commentRoutes=require('./routes/comment.routes');
 const app=express();
 connectDB(); //ConnecttoMongoDB
 //──Middleware─────────────────────────────────────────────────
-const origin = process.env.NODE_ENV === 'production' 
-  ? 'https://thefolio-project-six.vercel.app' // Update this to your exact Vercel URL
-  : 'http://localhost:3000';
-app.use(cors({ origin, credentials: true }));
+// Allow BOTH localhost (for your testing) AND Vercel (for the live site)
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://thefolio-project-six.vercel.app'
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
 //ParseincomingJSONrequestbodies
 app.use(express.json());
 //Serveuploadedimagefilesaspublic URLs
