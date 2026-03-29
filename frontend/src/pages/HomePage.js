@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import API from '../api/axios';
+import API, { API_ORIGIN } from '../api/axios';
 import { useState, useEffect } from 'react';
 import pic2 from '../pictures/pic2.jpg';
 
@@ -111,7 +111,7 @@ function HomePage() {
             >
               {post.image && (
                 <img
-                  src={`http://localhost:5000/uploads/${post.image}`}
+                  src={`${API_ORIGIN}/uploads/${post.image}`}
                   alt={post.title}
                   style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: 0, border: 'none', margin: 0, display: 'block' }}
                 />

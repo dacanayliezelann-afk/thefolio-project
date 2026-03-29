@@ -1,7 +1,7 @@
 // frontend/src/pages/EditPostPage.js
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import API from '../api/axios';
+import API, { API_ORIGIN } from '../api/axios';
 
 function EditPostPage() {
   const { id } = useParams();
@@ -88,7 +88,7 @@ function EditPostPage() {
           <div style={{ margin: '12px 0' }}>
             <label>{preview ? 'New Cover Image Preview:' : 'Current Cover Image:'}</label>
             <img
-              src={preview || `http://localhost:5000/uploads/${currentImage}`}
+              src={preview || `${API_ORIGIN}/uploads/${currentImage}`}
               alt="Cover"
               style={{
                 maxWidth: '100%', maxHeight: '220px', objectFit: 'cover',

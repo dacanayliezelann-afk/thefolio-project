@@ -1,7 +1,7 @@
 // frontend/src/pages/ProfilePage.js
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import API from '../api/axios';
+import API, { API_ORIGIN } from '../api/axios';
 
 function ProfilePage() {
   const { user, setUser } = useAuth();
@@ -19,7 +19,7 @@ function ProfilePage() {
   const [passError,    setPassError]    = useState('');
 
   const picSrc = user?.profilePic
-    ? `http://localhost:5000/uploads/${user.profilePic}`
+    ? `${API_ORIGIN}/uploads/${user.profilePic}`
     : null;
 
   const handleProfile = async (e) => {

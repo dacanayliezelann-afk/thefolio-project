@@ -1,8 +1,15 @@
 // frontend/src/api/axios.js
 import axios from 'axios';
 
+// Backend root (no /api). Local: http://localhost:5000. On Vercel set REACT_APP_API_URL to your deployed API origin.
+const API_ROOT = (process.env.REACT_APP_API_URL || 'http://localhost:5000')
+  .replace(/\/$/, '')
+  .replace(/\/api$/, '');
+
+export const API_ORIGIN = API_ROOT;
+
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api',  // ← must match your backend port
+  baseURL: `${API_ROOT}/api`,
 });
 
 // Attach the JWT token to every request automatically

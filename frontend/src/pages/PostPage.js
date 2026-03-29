@@ -1,7 +1,7 @@
 // frontend/src/pages/PostPage.js
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import API from '../api/axios';
+import API, { API_ORIGIN } from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 
 function PostPage() {
@@ -74,7 +74,7 @@ function PostPage() {
     <div className="content">
       {post.image && (
         <img
-          src={`http://localhost:5000/uploads/${post.image}`}
+          src={`${API_ORIGIN}/uploads/${post.image}`}
           alt={post.title}
           style={{ width: '100%', maxHeight: '300px', objectFit: 'cover', borderRadius: '8px', marginBottom: '20px', border: 'none' }}
         />

@@ -13,8 +13,24 @@ const commentRoutes=require('./routes/comment.routes');
 const app=express();
 connectDB(); //ConnecttoMongoDB
 //──Middleware─────────────────────────────────────────────────
-//AllowReact(port3000)tocall this server
-app.use(cors({origin:'http://localhost:3000', credentials: true }));
+// CORS: local dev + comma-separated origins in ALLOWED_ORIGINS (e.g. your Vercel URL)
+const defaultOrigins = ['http://localhost:3000', 'http://127.0.0.1:3000'];
+const extraOrigins = (process.env.ALLOWED_ORIGINS || '')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
+const allowedOrigins = [...new Set([...defaultOrigins, ...extraOrigins])];
+
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, origin);
+      return callback(null, false);
+    },
+    credentials: true,
+  })
+);
 //ParseincomingJSONrequestbodies
 app.use(express.json());
 //Serveuploadedimagefilesaspublic URLs
