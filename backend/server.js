@@ -13,9 +13,8 @@ const commentRoutes=require('./routes/comment.routes');
 const app=express();
 connectDB(); //ConnecttoMongoDB
 //──Middleware─────────────────────────────────────────────────
-//AllowReact(port3000)tocall this server
 const origin = process.env.NODE_ENV === 'production' 
-  ? 'https://thefolio-project-frontend-zqhh.onrender.com' 
+  ? 'https://thefolio-project-six.vercel.app' // Update this to your exact Vercel URL
   : 'http://localhost:3000';
 app.use(cors({ origin, credentials: true }));
 //ParseincomingJSONrequestbodies
