@@ -15,7 +15,7 @@ connectDB(); //ConnecttoMongoDB
 //──Middleware─────────────────────────────────────────────────
 //AllowReact(port3000)tocall this server
 const origin = process.env.NODE_ENV === 'production' 
-  ? 'https://your-frontend-url.onrender.com' 
+  ? 'https://thefolio-project-frontend-zqhh.onrender.com' 
   : 'http://localhost:3000';
 app.use(cors({ origin, credentials: true }));
 //ParseincomingJSONrequestbodies
