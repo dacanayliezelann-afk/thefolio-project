@@ -4,15 +4,14 @@ import API from '../api/axios';
 function AdminPage() {
   const [users, setUsers] = useState([]);
   const [posts, setPosts] = useState([]);
-  const [messages, setMessages] = useState([]); // Added missing state
+  const [messages, setMessages] = useState([]); 
   const [tab, setTab] = useState('users');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true); // Re-enabled
+  const [error, setError] = useState('');       // Re-enabled
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Included messages endpoint in the fetch
         const [ur, pr, mr] = await Promise.allSettled([
           API.get('/admin/users'),
           API.get('/admin/posts'),
@@ -20,13 +19,8 @@ function AdminPage() {
         ]);
 
         if (ur.status === 'fulfilled') setUsers(ur.value.data);
-        else setError('Could not load users.');
-
         if (pr.status === 'fulfilled') setPosts(pr.value.data);
-        else setError(prev => prev + ' Could not load posts.');
-
         if (mr.status === 'fulfilled') setMessages(mr.value.data);
-        else setError(prev => prev + ' Could not load messages.');
         
       } catch (err) {
         setError('Failed to load admin data.');
@@ -56,7 +50,6 @@ function AdminPage() {
     }
   };
 
-  // Duplicate function removed here
   const deleteMessage = async (id) => {
     if (!window.confirm('Delete this message forever?')) return;
     try {
@@ -146,6 +139,7 @@ function AdminPage() {
             { label: 'Active Members', value: activeUsers, icon: '✅' },
             { label: 'Total Posts', value: posts.length, icon: '📝' },
             { label: 'Published Posts', value: publishedPosts, icon: '🟢' },
+            { label: 'Messages', value: messages.length, icon: '✉️' }, // Added to use 'messages'
           ].map(card => (
             <div key={card.label} style={{
               background: 'var(--content-bg)', border: '1px solid var(--border-clr)',
