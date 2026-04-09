@@ -63,28 +63,37 @@ function AdminPage() {
     cursor: 'default'
   };
 
-  const navContainerStyle = {
-    display: 'flex',
-    background: 'rgba(0,0,0,0.05)',
-    padding: '5px',
-    borderRadius: '10px',
-    marginBottom: '30px',
-    width: 'fit-content',
-    border: '1px solid var(--border-clr)'
-  };
+  /* ── Enhanced Nav Styles ── */
+const navContainerStyle = {
+  display: 'inline-flex',
+  background: 'rgba(255, 255, 255, 0.05)', // Subtle glass look
+  backdropFilter: 'blur(10px)',
+  padding: '6px',
+  borderRadius: '14px',
+  marginBottom: '35px',
+  border: '1px solid var(--border-clr)',
+  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+  position: 'relative',
+};
 
-  const navButtonStyle = (active) => ({
-    padding: '10px 25px',
-    borderRadius: '8px',
-    border: 'none',
-    cursor: 'pointer',
-    fontWeight: '700',
-    fontSize: '0.9rem',
-    transition: 'all 0.3s ease',
-    background: active ? 'var(--snd-bg-color)' : 'transparent',
-    color: active ? 'white' : 'var(--text-color)',
-    boxShadow: active ? '0 4px 10px rgba(0,0,0,0.15)' : 'none',
-  });
+const navButtonStyle = (active) => ({
+  padding: '12px 28px',
+  borderRadius: '10px',
+  border: 'none',
+  cursor: 'pointer',
+  fontWeight: '700',
+  fontSize: '0.85rem',
+  textTransform: 'uppercase',
+  letterSpacing: '0.5px',
+  transition: 'all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1)',
+  background: active ? 'var(--snd-bg-color)' : 'transparent',
+  color: active ? '#fff' : 'var(--text-color)',
+  boxShadow: active ? '0 10px 20px rgba(0, 0, 0, 0.2)' : 'none',
+  transform: active ? 'scale(1.02)' : 'scale(1)',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px',
+});
 
   return (
     <main className="main-content">
