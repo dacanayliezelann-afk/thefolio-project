@@ -21,7 +21,6 @@ function AdminPage() {
         if (ur.status === 'fulfilled') setUsers(ur.value.data);
         if (pr.status === 'fulfilled') setPosts(pr.value.data);
         if (mr.status === 'fulfilled') setMessages(mr.value.data);
-        
       } catch (err) {
         setError('Failed to load admin data.');
       } finally {
@@ -60,94 +59,85 @@ function AdminPage() {
     }
   };
 
-  /* ── Styles & Helpers ── */
-  const tabBtn = (val, label) => (
-    <button
-      onClick={() => setTab(val)}
-      style={{
-        padding: '10px 22px',
-        background: tab === val ? 'var(--snd-bg-color)' : 'transparent',
-        color: tab === val ? 'white' : 'var(--snd-bg-color)',
-        border: '2px solid var(--snd-bg-color)',
-        borderRadius: '6px',
-        fontWeight: 'bold',
-        cursor: 'pointer',
-        fontSize: '0.92rem',
-        transition: 'all 0.2s',
-      }}
-    >
-      {label}
-    </button>
-  );
+  /* ── Stats Calculations ── */
+  const activeUsers = users.filter(u => u.status === 'active').length;
+  const deactivatedUsers = users.filter(u => u.status !== 'active' && u.role !== 'admin').length;
+  const publishedPosts = posts.filter(p => p.status === 'published').length;
 
-  const badge = (status) => {
-    const ok = status === 'active' || status === 'published';
-    return (
-      <span style={{
-        padding: '3px 10px', borderRadius: '20px', fontSize: '0.78rem', fontWeight: 'bold',
-        background: ok ? 'rgba(255,152,0,0.15)' : 'rgba(229,57,53,0.12)',
-        color: ok ? 'var(--snd-bg-color)' : '#c62828',
-        border: `1px solid ${ok ? 'var(--snd-bg-color)' : '#e53935'}`,
-      }}>
-        {status}
-      </span>
-    );
-  };
-
+  /* ── Styles ── */
   const thS = { padding: '12px', textAlign: 'left', background: 'var(--snd-bg-color)', color: 'white', border: '1px solid var(--border-clr)' };
-  const tdS = { padding: '12px', border: '1px solid var(--border-clr)', verticalAlign: 'top' };
+  const tdS = { padding: '12px', border: '1px solid var(--border-clr)', verticalAlign: 'middle' };
 
-  if (loading) return <div className="content">Loading...</div>;
+  if (loading) return <div className="content">Loading Admin Panel...</div>;
 
   return (
     <main className="main-content">
       <div className="content">
         <h2>🛡️ Admin Dashboard</h2>
 
-        {/* Dashboard Stats Cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '12px', marginBottom: '24px' }}>
+        {/* Updated Stats Cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '15px', marginBottom: '30px' }}>
           {[
-            { label: 'Members', value: users.length, icon: '👥' },
-            { label: 'Posts', value: posts.length, icon: '📝' },
-            { label: 'Messages', value: messages.length, icon: '✉️' },
+            { label: 'Total Members', value: users.length, icon: '👥', color: 'var(--text-color)' },
+            { label: 'Active', value: activeUsers, icon: '✅', color: '#2e7d32' },
+            { label: 'Deactivated', value: deactivatedUsers, icon: '🚫', color: '#e53935' },
+            { label: 'Live Posts', value: publishedPosts, icon: '📝', color: 'var(--snd-bg-color)' },
+            { label: 'Inbox', value: messages.length, icon: '✉️', color: '#1976d2' },
           ].map(card => (
-            <div key={card.label} style={{ background: 'var(--content-bg)', border: '1px solid var(--border-clr)', borderRadius: '8px', padding: '16px', textAlign: 'center' }}>
-              <div style={{ fontSize: '1.5rem' }}>{card.icon}</div>
-              <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{card.value}</div>
-              <div style={{ opacity: 0.7, fontSize: '0.8rem' }}>{card.label}</div>
+            <div key={card.label} style={{ background: 'var(--content-bg)', border: '1px solid var(--border-clr)', borderRadius: '10px', padding: '20px', textAlign: 'center', boxShadow: '0 2px 5px rgba(0,0,0,0.05)' }}>
+              <div style={{ fontSize: '1.8rem', marginBottom: '5px' }}>{card.icon}</div>
+              <div style={{ fontSize: '1.6rem', fontWeight: 'bold', color: card.color }}>{card.value}</div>
+              <div style={{ opacity: 0.7, fontSize: '0.85rem', fontWeight: '600' }}>{card.label}</div>
             </div>
           ))}
         </div>
 
-        {/* Navigation Tabs */}
-        <div style={{ display: 'flex', gap: '10px', marginBottom: '24px', flexWrap: 'wrap' }}>
-          {tabBtn('users', 'Members')}
-          {tabBtn('posts', 'Posts')}
-          {tabBtn('messages', 'Inbox')}
+        {/* Tabs navigation */}
+        <div style={{ display: 'flex', gap: '10px', marginBottom: '25px' }}>
+          <button onClick={() => setTab('users')} className={`btn ${tab === 'users' ? '' : 'btn-outline'}`}>Members</button>
+          <button onClick={() => setTab('posts')} className={`btn ${tab === 'posts' ? '' : 'btn-outline'}`}>Posts</button>
+          <button onClick={() => setTab('messages')} className={`btn ${tab === 'messages' ? '' : 'btn-outline'}`}>Inbox ({messages.length})</button>
         </div>
 
-        {/* Members Table */}
+        {/* Content Area */}
         {tab === 'users' && (
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>
-                  <th style={thS}>Name</th>
+                  <th style={thS}>Member Details</th>
                   <th style={thS}>Status</th>
-                  <th style={thS}>Action</th>
+                  <th style={thS}>Account Action</th>
                 </tr>
               </thead>
               <tbody>
                 {users.map(u => (
                   <tr key={u._id}>
-                    <td style={tdS}>{u.name}<br/><small>{u.email}</small></td>
-                    <td style={tdS}>{badge(u.status)}</td>
                     <td style={tdS}>
-                      {u.role !== 'admin' && (
-                        <button onClick={() => toggleStatus(u._id)} style={{ padding: '4px 8px', borderRadius: '4px' }}>
-                          Toggle
+                      <strong>{u.name}</strong><br />
+                      <span style={{ fontSize: '0.8rem', opacity: 0.7 }}>{u.email}</span>
+                    </td>
+                    <td style={tdS}>
+                      <span style={{ 
+                        padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 'bold',
+                        background: u.status === 'active' ? 'rgba(46, 125, 50, 0.1)' : 'rgba(229, 57, 53, 0.1)',
+                        color: u.status === 'active' ? '#2e7d32' : '#e53935'
+                      }}>
+                        {u.status.toUpperCase()}
+                      </span>
+                    </td>
+                    <td style={tdS}>
+                      {u.role !== 'admin' ? (
+                        <button 
+                          onClick={() => toggleStatus(u._id)}
+                          style={{ 
+                            padding: '6px 12px', borderRadius: '5px', border: 'none', cursor: 'pointer', color: 'white', fontWeight: 'bold',
+                            background: u.status === 'active' ? '#e53935' : '#2e7d32'
+                          }}
+                        >
+                          {u.status === 'active' ? 'Deactivate Account' : 'Activate Account'}
                         </button>
-                      )}
+                      ) : <small>System Admin</small>}
                     </td>
                   </tr>
                 ))}
@@ -156,53 +146,44 @@ function AdminPage() {
           </div>
         )}
 
-        {/* Posts Table */}
         {tab === 'posts' && (
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr>
-                  <th style={thS}>Title</th>
-                  <th style={thS}>Status</th>
-                  <th style={thS}>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {posts.map(p => (
-                  <tr key={p._id}>
-                    <td style={tdS}>{p.title}</td>
-                    <td style={tdS}>{badge(p.status)}</td>
-                    <td style={tdS}>
-                      <button onClick={() => removePost(p._id)} style={{ color: 'red' }}>Remove</button>
-                    </td>
+           <div style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr>
+                    <th style={thS}>Post Title</th>
+                    <th style={thS}>Author</th>
+                    <th style={thS}>Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {posts.map(p => (
+                    <tr key={p._id}>
+                      <td style={tdS}>{p.title}</td>
+                      <td style={tdS}>{p.author?.name || 'Unknown'}</td>
+                      <td style={tdS}>
+                        <button onClick={() => removePost(p._id)} style={{ color: '#e53935', background: 'none', border: '1px solid #e53935', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer' }}>Remove</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+           </div>
         )}
 
-        {/* Messages Inbox */}
         {tab === 'messages' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-            {messages.length === 0 ? <p>No messages received.</p> : messages.map(m => (
-              <div key={m._id} style={{ background: 'var(--content-bg)', border: '1px solid var(--border-clr)', padding: '15px', borderRadius: '8px', position: 'relative' }}>
-                <button 
-                  onClick={() => deleteMessage(m._id)}
-                  style={{ position: 'absolute', top: '10px', right: '10px', background: 'transparent', border: 'none', cursor: 'pointer', fontSize: '1.2rem' }}
-                >
-                  🗑️
-                </button>
-                <div style={{ marginBottom: '8px' }}>
-                  <strong>From: {m.name}</strong> 
-                  <span style={{ fontSize: '0.8rem', opacity: 0.6, marginLeft: '10px' }}>
-                    ({new Date(m.createdAt).toLocaleDateString()})
-                  </span>
-                  <br />
-                  <small style={{ color: 'var(--snd-bg-color)' }}>{m.email}</small>
+          <div style={{ display: 'grid', gap: '15px' }}>
+            {messages.length === 0 ? <p>No messages in your inbox.</p> : messages.map(m => (
+              <div key={m._id} style={{ background: 'var(--content-bg)', border: '1px solid var(--border-clr)', padding: '20px', borderRadius: '8px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+                  <div>
+                    <strong>{m.name}</strong> <small style={{ opacity: 0.6 }}>({m.email})</small>
+                  </div>
+                  <button onClick={() => deleteMessage(m._id)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>🗑️</button>
                 </div>
-                <div style={{ padding: '10px', background: 'rgba(0,0,0,0.03)', borderRadius: '4px', fontStyle: 'italic' }}>
-                  "{m.message}"
+                <p style={{ fontStyle: 'italic', margin: 0 }}>"{m.message}"</p>
+                <div style={{ textAlign: 'right', fontSize: '0.75rem', opacity: 0.5, marginTop: '10px' }}>
+                  {new Date(m.createdAt).toLocaleString()}
                 </div>
               </div>
             ))}
