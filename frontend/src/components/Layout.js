@@ -30,10 +30,9 @@ const Layout = ({ children }) => {
           <li><Link to="/home" className={isActive('/home')}>Home</Link></li>
           <li><Link to="/about" className={isActive('/about')}>About</Link></li>
           
-          {/* HIDE CONTACT FROM ADMIN (Case-insensitive check) */}
-          {user?.role?.toLowerCase() !== 'admin' && (
-            <li><Link to="/contact" className={isActive('/contact')}>Contact</Link></li>
-          )}
+          {user?.role?.toString().trim().toLowerCase() !== 'admin' && (
+  <li><Link to="/contact" className={isActive('/contact')}>Contact</Link></li>
+)}
 
           {!user && (
             <>
