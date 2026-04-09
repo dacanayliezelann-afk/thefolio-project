@@ -32,36 +32,39 @@ const Layout = ({ children }) => {
         <Theme />
       </header>
 
-      {/* ── Navigation ── */}
       <nav className="horizontal-nav">
-        <ul>
-          <li><Link to="/home"    className={isActive('/home')}>Home</Link></li>
-          <li><Link to="/about"   className={isActive('/about')}>About</Link></li>
-          <li><Link to="/contact" className={isActive('/contact')}>Contact</Link></li>
+  <ul>
+    <li><Link to="/home" className={isActive('/home')}>Home</Link></li>
+    <li><Link to="/about" className={isActive('/about')}>About</Link></li>
+    
+    {/* ── Only show Contact if user is NOT an admin ── */}
+    {user?.role !== 'admin' && (
+      <li><Link to="/contact" className={isActive('/contact')}>Contact</Link></li>
+    )}
 
-          {!user && (
-            <>
-              <li><Link to="/register" className={isActive('/register')}>Register</Link></li>
-              <li><Link to="/login"    className={isActive('/login')}>Login</Link></li>
-            </>
-          )}
+    {!user && (
+      <>
+        <li><Link to="/register" className={isActive('/register')}>Register</Link></li>
+        <li><Link to="/login" className={isActive('/login')}>Login</Link></li>
+      </>
+    )}
 
-          {user && (
-            <>
-              <li><Link to="/create-post" className={isActive('/create-post')}>Write Post</Link></li>
-              <li><Link to="/profile"     className={isActive('/profile')}>Profile</Link></li>
-              {user.role === 'admin' && (
-                <li><Link to="/admin" className={isActive('/admin')}>Admin</Link></li>
-              )}
-              <li>
-                <button className="nav-logout-btn" onClick={handleLogout}>
-                  Logout ({user.name})
-                </button>
-              </li>
-            </>
-          )}
-        </ul>
-      </nav>
+    {user && (
+      <>
+        <li><Link to="/create-post" className={isActive('/create-post')}>Write Post</Link></li>
+        <li><Link to="/profile" className={isActive('/profile')}>Profile</Link></li>
+        {user.role === 'admin' && (
+          <li><Link to="/admin" className={isActive('/admin')}>Admin</Link></li>
+        )}
+        <li>
+          <button className="nav-logout-btn" onClick={handleLogout}>
+            Logout ({user.name})
+          </button>
+        </li>
+      </>
+    )}
+  </ul>
+</nav>
 
       {/* ── Page Content ── */}
       <main>{children}</main>
