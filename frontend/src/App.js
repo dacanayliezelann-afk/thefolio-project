@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
-import { useAuth } from './context/AuthContext'; // <--- Ensure this path is correct
+import { useAuth } from './context/AuthContext'; 
 
 import SplashPage from './pages/SplashPage';
 import HomePage from './pages/HomePage';
@@ -18,18 +18,19 @@ import AdminPage from './pages/AdminPage';
 import './App.css';
 
 function App() {
-  const { user } = useAuth(); // Hook to check user role
+  // 1. CRITICAL: You must call useAuth() here so the 'user' variable exists
+  const { user } = useAuth(); 
 
   return (
     <Routes>
-      {/* 1. Splash — No Layout wrapper */}
+      {/* Splash — no Layout */}
       <Route path="/" element={<SplashPage />} />
 
-      {/* 2. Public Routes — Wrapped in Layout */}
+      {/* Public Routes */}
       <Route path="/home" element={<Layout><HomePage /></Layout>} />
       <Route path="/about" element={<Layout><AboutPage /></Layout>} />
       
-      {/* 3. Restricted Contact Route — Redirects Admin to Dashboard */}
+      {/* 2. Your Logic Integrated: Redirect Admin away from Contact */}
       <Route 
         path="/contact" 
         element={
@@ -44,37 +45,28 @@ function App() {
       <Route path="/register" element={<Layout><RegisterPage /></Layout>} />
       <Route path="/login" element={<Layout><LoginPage /></Layout>} />
       <Route path="/posts/:id" element={<Layout><PostPage /></Layout>} />
-
-      {/* 4. Backward-compatible aliases */}
+      
+      {/* Aliases */}
       <Route path="/contacts" element={<Navigate to="/contact" replace />} />
       <Route path="/sign-up" element={<Navigate to="/register" replace />} />
       <Route path="/log-in" element={<Navigate to="/login" replace />} />
 
-      {/* 5. Protected User Routes */}
+      {/* Protected Routes */}
       <Route path="/profile" element={
-        <ProtectedRoute>
-          <Layout><ProfilePage /></Layout>
-        </ProtectedRoute>
+        <ProtectedRoute><Layout><ProfilePage /></Layout></ProtectedRoute>
       } />
       <Route path="/create-post" element={
-        <ProtectedRoute>
-          <Layout><CreatePostPage /></Layout>
-        </ProtectedRoute>
+        <ProtectedRoute><Layout><CreatePostPage /></Layout></ProtectedRoute>
       } />
       <Route path="/edit-post/:id" element={
-        <ProtectedRoute>
-          <Layout><EditPostPage /></Layout>
-        </ProtectedRoute>
+        <ProtectedRoute><Layout><EditPostPage /></Layout></ProtectedRoute>
       } />
 
-      {/* 6. Admin Only Route */}
+      {/* Admin only */}
       <Route path="/admin" element={
-        <ProtectedRoute role="admin">
-          <Layout><AdminPage /></Layout>
-        </ProtectedRoute>
+        <ProtectedRoute role="admin"><Layout><AdminPage /></Layout></ProtectedRoute>
       } />
 
-      {/* 7. Catch-all Redirect */}
       <Route path="*" element={<Navigate to="/home" replace />} />
     </Routes>
   );
