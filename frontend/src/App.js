@@ -32,15 +32,15 @@ function App() {
       
       {/* 2. Your Logic Integrated: Redirect Admin away from Contact */}
       <Route 
-        path="/contact" 
-        element={
-          user?.role?.toLowerCase() === 'admin' ? (
-            <Navigate to="/admin" replace />
-          ) : (
-            <Layout><ContactPage /></Layout>
-          )
-        } 
-      />
+  path="/contact" 
+  element={
+    user?.role?.toString().trim().toLowerCase() === 'admin' ? (
+      <Navigate to="/admin" replace />
+    ) : (
+      <Layout><ContactPage /></Layout>
+    )
+  } 
+/>
 
       <Route path="/register" element={<Layout><RegisterPage /></Layout>} />
       <Route path="/login" element={<Layout><LoginPage /></Layout>} />
