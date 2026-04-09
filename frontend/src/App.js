@@ -1,25 +1,25 @@
-// frontend/src/App.js
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
+import { useAuth } from './context/AuthContext'; // 1. Import useAuth
 
 import SplashPage     from './pages/SplashPage';
-import HomePage       from './pages/HomePage';
-import AboutPage      from './pages/AboutPage';
-import ContactPage    from './pages/ContactPage';
-import RegisterPage   from './pages/RegisterPage';
-import LoginPage      from './pages/LoginPage';
-import PostPage       from './pages/PostPage';
-import ProfilePage    from './pages/ProfilePage';
-import CreatePostPage from './pages/CreatePostPage';
-import EditPostPage   from './pages/EditPostPage';
-import AdminPage      from './pages/AdminPage';
+import HomePage        from './pages/HomePage';
+import AboutPage       from './pages/AboutPage';
+import ContactPage     from './pages/ContactPage';
+import RegisterPage    from './pages/RegisterPage';
+import LoginPage       from './pages/LoginPage';
+import PostPage        from './pages/PostPage';
+import ProfilePage     from './pages/ProfilePage';
+import CreatePostPage  from './pages/CreatePostPage';
+import EditPostPage    from './pages/EditPostPage';
+import AdminPage       from './pages/AdminPage';
 
 import './App.css';
 
-// ⚠️ BrowserRouter is in index.js — do NOT add it here
-
 function App() {
+  const { user } = useAuth(); // 2. Access user state
+
   return (
     <Routes>
       {/* Splash — no Layout */}
@@ -28,10 +28,23 @@ function App() {
       {/* Public — wrapped in Layout */}
       <Route path="/home"      element={<Layout><HomePage /></Layout>} />
       <Route path="/about"     element={<Layout><AboutPage /></Layout>} />
-      <Route path="/contact"   element={<Layout><ContactPage /></Layout>} />
+      
+      {/* 3. Conditional Route for Contact */}
+      <Route 
+        path="/contact" 
+        element={
+          user?.role === 'admin' ? (
+            <Navigate to="/admin" replace /> 
+          ) : (
+            <Layout><ContactPage /></Layout>
+          )
+        } 
+      />
+
       <Route path="/register"  element={<Layout><RegisterPage /></Layout>} />
       <Route path="/login"     element={<Layout><LoginPage /></Layout>} />
       <Route path="/posts/:id" element={<Layout><PostPage /></Layout>} />
+      
       {/* Backward-compatible aliases */}
       <Route path="/contacts"  element={<Navigate to="/contact" replace />} />
       <Route path="/sign-up"   element={<Navigate to="/register" replace />} />
@@ -54,6 +67,7 @@ function App() {
       <Route path="/admin" element={
         <ProtectedRoute role="admin"><Layout><AdminPage /></Layout></ProtectedRoute>
       } />
+      
       <Route path="*" element={<Navigate to="/home" replace />} />
     </Routes>
   );
