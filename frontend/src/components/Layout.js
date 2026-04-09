@@ -30,10 +30,13 @@ const Layout = ({ children }) => {
           <li><Link to="/home" className={isActive('/home')}>Home</Link></li>
           <li><Link to="/about" className={isActive('/about')}>About</Link></li>
           
-          {user?.role?.toString().trim().toLowerCase() !== 'admin' && (
-  <li><Link to="/contact" className={isActive('/contact')}>Contact</Link></li>
-)}
-
+      {user?.role?.toString().toLowerCase().trim() !== 'admin' && (
+        <li>
+        <Link to="/contact" className={isActive('/contact')}>
+        Contact
+        </Link>
+        </li>
+        )}
           {!user && (
             <>
               <li><Link to="/register" className={isActive('/register')}>Register</Link></li>
