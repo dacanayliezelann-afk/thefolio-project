@@ -18,10 +18,7 @@ function HomePage() {
   }, []);
 
   return (
-    <main className="main-content" style={{ background: '#fffbf0', minHeight: '100vh' }}>
-
-      {/* ── Top spacer — creates gap between fixed nav and content ── */}
-      <div style={{ height: '32px' }} />
+    <main className="main-content" style={{ background: '#fffbf0', minHeight: '100vh', paddingTop: '40px' }}>
 
       {/* ── Hero ── */}
       <div style={{
@@ -32,7 +29,7 @@ function HomePage() {
         overflow: 'hidden',
         borderRadius: '20px',
         maxWidth: '860px',
-        margin: 'auto',
+        margin: '0 auto',
         boxShadow: '0 8px 32px rgba(255,152,0,0.20)',
       }}>
         {/* decorative circles */}
