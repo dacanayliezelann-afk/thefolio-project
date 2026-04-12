@@ -1,9 +1,10 @@
 // backend/routes/post.routes.js
 const express = require('express');
-const Post = require('../models/Post');
-const { protect } = require('../middleware/auth.middleware');
+const Post    = require('../models/Post');
+const { protect }       = require('../middleware/auth.middleware');
 const { memberOrAdmin } = require('../middleware/role.middleware');
-const upload = require('../middleware/upload');
+// ✅ No multer import — images are stored as base64 strings in MongoDB.
+//    Render's filesystem is ephemeral so multer file uploads are lost on redeploy.
 
 const router = express.Router();
 
@@ -33,12 +34,16 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST /api/posts — Member or Admin: create new post
-// upload.single('image') handles optional image file
-router.post('/', protect, memberOrAdmin, upload.single('image'), async (req, res) => {
+// Image arrives as base64 string in req.body.image (compressed by the frontend canvas)
+router.post('/', protect, memberOrAdmin, async (req, res) => {
   try {
-    const { title, body } = req.body;
-    const image = req.file ? req.file.filename : '';
-    const post = await Post.create({ title, body, image, author: req.user._id });
+    const { title, body, image } = req.body;
+    const post = await Post.create({
+      title,
+      body,
+      image: image || '',
+      author: req.user._id,
+    });
     await post.populate('author', 'name profilePic');
     res.status(201).json(post);
   } catch (err) {
@@ -47,22 +52,26 @@ router.post('/', protect, memberOrAdmin, upload.single('image'), async (req, res
 });
 
 // PUT /api/posts/:id — Edit: only post owner OR admin
-router.put('/:id', protect, memberOrAdmin, upload.single('image'), async (req, res) => {
+router.put('/:id', protect, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
-    if (!post) return res.status(404).json({ message: 'Post not found' });
+    if (!post || post.status === 'removed') {
+      return res.status(404).json({ message: 'Post not found' });
+    }
 
     const isOwner = post.author.toString() === req.user._id.toString();
     const isAdmin = req.user.role === 'admin';
     if (!isOwner && !isAdmin) {
-      return res.status(403).json({ message: 'Not authorized' });
+      return res.status(403).json({ message: 'Not authorized to edit this post' });
     }
 
-    if (req.body.title) post.title = req.body.title;
-    if (req.body.body) post.body = req.body.body;
-    if (req.file) post.image = req.file.filename;
+    // Use !== undefined so empty string ("") correctly clears the image
+    if (req.body.title !== undefined) post.title = req.body.title;
+    if (req.body.body  !== undefined) post.body  = req.body.body;
+    if (req.body.image !== undefined) post.image = req.body.image;
 
     await post.save();
+    await post.populate('author', 'name profilePic');
     res.json(post);
   } catch (err) {
     res.status(500).json({ message: err.message });
