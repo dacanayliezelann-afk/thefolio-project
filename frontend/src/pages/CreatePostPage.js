@@ -99,7 +99,7 @@ function CreatePostPage() {
   };
 
   return (
-    <div style={{ background: '#fffbf0', minHeight: '100vh', paddingBottom: '60px' }}>
+    <div style={{ background: '#fffbf0', minHeight: '100vh', paddingBottom: '60px' , paddingTop:'100px'}}>
 
       {/* Page header banner */}
       <div style={{
