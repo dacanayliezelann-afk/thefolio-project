@@ -18,8 +18,10 @@ function HomePage() {
   }, []);
 
   return (
-    <div className="about-container" style={{ maxWidth: '800px', margin: '0 auto' }}>
     <main className="main-content" style={{ background: '#fffbf0', minHeight: '100vh' }}>
+
+      {/* ── Top spacer — creates gap between fixed nav and content ── */}
+      <div style={{ height: '32px' }} />
 
       {/* ── Hero ── */}
       <div style={{
@@ -28,6 +30,10 @@ function HomePage() {
         textAlign: 'center',
         position: 'relative',
         overflow: 'hidden',
+        borderRadius: '20px',
+        maxWidth: '860px',
+        margin: '0 auto',
+        boxShadow: '0 8px 32px rgba(255,152,0,0.20)',
       }}>
         {/* decorative circles */}
         <div style={{ position: 'absolute', top: '-40px', left: '-40px', width: '180px', height: '180px', borderRadius: '50%', background: 'rgba(255,255,255,0.06)' }} />
@@ -174,7 +180,6 @@ function HomePage() {
                 onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 10px 28px rgba(255,152,0,0.20)'; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 2px 8px rgba(255,152,0,0.08)'; }}
               >
-                {/* ✅ FIX: post.image is a base64 string — use it directly as src */}
                 {post.image ? (
                   <img
                     src={post.image}
@@ -227,7 +232,6 @@ function HomePage() {
       </div>
 
     </main>
-  </div>
   );
 }
 
