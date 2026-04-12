@@ -18,7 +18,7 @@ function HomePage() {
   }, []);
 
   return (
-    <main className="main-content" style={{ background: '#fffbf0', minHeight: '100vh', paddingTop: '100px' }}>
+    <main className="main-content" style={{ background: 'var(--bg-color)', minHeight: '100vh' }}>
 
       {/* ── Hero ── */}
       <div style={{
@@ -75,8 +75,8 @@ function HomePage() {
       {/* ── Why Cooking section ── */}
       <div style={{ maxWidth: '860px', margin: '0 auto', padding: '48px 24px 0' }}>
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <h2 style={{ color: '#bf360c', fontFamily: 'Georgia, serif', marginBottom: '8px' }}>Why Cooking?</h2>
-          <p style={{ color: '#8d6e63', fontSize: '0.95rem' }}>A few reasons to tie on your apron today</p>
+          <h2 style={{ color: 'var(--snd-bg-color)', fontFamily: 'Georgia, serif', marginBottom: '8px' }}>Why Cooking?</h2>
+          <p style={{ color: 'var(--text-color)', fontSize: '0.95rem', opacity: 0.7 }}>A few reasons to tie on your apron today</p>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '20px', marginBottom: '40px' }}>
@@ -89,8 +89,8 @@ function HomePage() {
             { icon: '✨', title: 'Pure Joy',               desc: "There's something deeply satisfying about feeding people you love. Cooking is one of the kindest acts you can do." },
           ].map(({ icon, title, desc }) => (
             <div key={title} style={{
-              background: '#fff',
-              border: '1.5px solid #ffe0b2',
+              background: 'var(--content-bg)',
+              border: '1.5px solid var(--border-clr)',
               borderRadius: '14px',
               padding: '22px 18px',
               boxShadow: '0 2px 8px rgba(255,152,0,0.08)',
@@ -100,25 +100,25 @@ function HomePage() {
               onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 2px 8px rgba(255,152,0,0.08)'; }}
             >
               <p style={{ fontSize: '2rem', marginBottom: '10px' }}>{icon}</p>
-              <h3 style={{ fontSize: '1rem', color: '#bf360c', marginBottom: '8px', fontFamily: 'Georgia, serif' }}>{title}</h3>
-              <p style={{ color: '#795548', fontSize: '0.86rem', lineHeight: '1.6', margin: 0 }}>{desc}</p>
+              <h3 style={{ fontSize: '1rem', color: 'var(--snd-bg-color)', marginBottom: '8px', fontFamily: 'Georgia, serif' }}>{title}</h3>
+              <p style={{ color: 'var(--text-color)', fontSize: '0.86rem', lineHeight: '1.6', margin: 0 }}>{desc}</p>
             </div>
           ))}
         </div>
 
         {/* Quote */}
         <div style={{
-          borderLeft: '5px solid #ff9800',
-          background: 'linear-gradient(90deg, #fff8e1, #fff)',
+          borderLeft: '5px solid var(--snd-bg-color)',
+          background: 'var(--content-bg)',
           borderRadius: '0 12px 12px 0',
           padding: '20px 28px',
           marginBottom: '48px',
           boxShadow: '0 2px 12px rgba(255,152,0,0.10)',
         }}>
-          <p style={{ fontFamily: 'Georgia, serif', fontSize: '1.1rem', fontStyle: 'italic', color: '#4e342e', lineHeight: '1.8', margin: '0 0 10px' }}>
+          <p style={{ fontFamily: 'Georgia, serif', fontSize: '1.1rem', fontStyle: 'italic', color: 'var(--text-color)', lineHeight: '1.8', margin: '0 0 10px' }}>
             "Cooking done with care is an act of love."
           </p>
-          <footer style={{ fontSize: '0.88rem', color: '#ff6f00', fontWeight: '700' }}>— Craig Claiborne</footer>
+          <footer style={{ fontSize: '0.88rem', color: 'var(--snd-bg-color)', fontWeight: '700' }}>— Craig Claiborne</footer>
         </div>
       </div>
 
@@ -126,8 +126,8 @@ function HomePage() {
       <div style={{ maxWidth: '860px', margin: '0 auto', padding: '0 24px 60px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
           <div>
-            <h2 style={{ color: '#bf360c', fontFamily: 'Georgia, serif', marginBottom: '4px' }}>📝 Latest Posts</h2>
-            <p style={{ color: '#8d6e63', fontSize: '0.88rem', margin: 0 }}>Fresh from the community kitchen</p>
+            <h2 style={{ color: 'var(--snd-bg-color)', fontFamily: 'Georgia, serif', marginBottom: '4px' }}>📝 Latest Posts</h2>
+            <p style={{ color: 'var(--text-color)', fontSize: '0.88rem', margin: 0, opacity: 0.7 }}>Fresh from the community kitchen</p>
           </div>
           {user && (
             <Link to="/create-post" style={{
@@ -145,7 +145,7 @@ function HomePage() {
         {loading && (
           <div style={{ textAlign: 'center', padding: '40px 0', color: '#ff9800' }}>
             <div style={{ fontSize: '2rem', marginBottom: '8px' }}>⏳</div>
-            <p style={{ color: '#8d6e63', fontStyle: 'italic' }}>Loading posts…</p>
+            <p style={{ color: 'var(--text-color)', fontStyle: 'italic', opacity: 0.7 }}>Loading posts…</p>
           </div>
         )}
 
@@ -156,9 +156,9 @@ function HomePage() {
         )}
 
         {!loading && !error && posts.length === 0 && (
-          <div style={{ textAlign: 'center', padding: '48px 20px', border: '2px dashed #ffcc80', borderRadius: '14px', background: '#fff8e1' }}>
+          <div style={{ textAlign: 'center', padding: '48px 20px', border: '2px dashed var(--border-clr)', borderRadius: '14px', background: 'var(--content-bg)' }}>
             <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🍽️</div>
-            <p style={{ color: '#8d6e63', fontStyle: 'italic', margin: 0 }}>No posts yet — be the first to write one!</p>
+            <p style={{ color: 'var(--text-color)', fontStyle: 'italic', margin: 0, opacity: 0.7 }}>No posts yet — be the first to write one!</p>
           </div>
         )}
 
@@ -166,10 +166,10 @@ function HomePage() {
           {posts.map(post => (
             <Link key={post._id} to={`/posts/${post._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
               <article style={{
-                border: '1.5px solid #ffe0b2',
+                border: '1.5px solid var(--border-clr)',
                 borderRadius: '14px',
                 overflow: 'hidden',
-                background: '#fff',
+                background: 'var(--content-bg)',
                 boxShadow: '0 2px 8px rgba(255,152,0,0.08)',
                 transition: 'transform 0.2s, box-shadow 0.2s',
                 display: 'flex', flexDirection: 'column', height: '100%',
@@ -193,30 +193,30 @@ function HomePage() {
 
                 <div style={{ padding: '18px 20px', display: 'flex', flexDirection: 'column', flex: 1 }}>
                   <h3 style={{
-                    margin: '0 0 8px', fontSize: '1.05rem', color: '#4e342e',
+                    margin: '0 0 8px', fontSize: '1.05rem', color: 'var(--text-color)',
                     fontFamily: 'Georgia, serif', lineHeight: '1.4',
                     display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden',
                   }}>
                     {post.title}
                   </h3>
                   <p style={{
-                    margin: '0 0 14px', color: '#795548', fontSize: '0.88rem', lineHeight: '1.6', flex: 1,
+                    margin: '0 0 14px', color: 'var(--text-color)', fontSize: '0.88rem', lineHeight: '1.6', flex: 1,
                     display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden',
                   }}>
                     {post.body}
                   </p>
                   <div style={{
                     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                    borderTop: '1px solid #ffe0b2', paddingTop: '12px',
+                    borderTop: '1px solid var(--border-clr)', paddingTop: '12px',
                     fontSize: '0.82rem',
                   }}>
-                    <span style={{ color: '#e65100', fontWeight: '700' }}>
+                    <span style={{ color: 'var(--snd-bg-color)', fontWeight: '700' }}>
                       ✍️ {post.author?.name || 'Unknown'}
                     </span>
                     <span style={{
-                      color: '#e65100', fontWeight: '700',
-                      background: '#fff8e1', padding: '3px 12px',
-                      borderRadius: '999px', border: '1px solid #ffcc80',
+                      color: 'var(--snd-bg-color)', fontWeight: '700',
+                      background: 'var(--bg-color)', padding: '3px 12px',
+                      borderRadius: '999px', border: '1px solid var(--border-clr)',
                     }}>
                       {new Date(post.createdAt).toLocaleDateString()}
                     </span>
