@@ -18,7 +18,7 @@ function HomePage() {
   }, []);
 
   return (
-    <main className="main-content" style={{ background: '#fffbf0', minHeight: '100vh', paddingTop: '40px' }}>
+    <main className="main-content" style={{ background: '#fffbf0', minHeight: '100vh', paddingTop: '100px' }}>
 
       {/* ── Hero ── */}
       <div style={{
