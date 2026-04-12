@@ -18,6 +18,7 @@ function HomePage() {
   }, []);
 
   return (
+    <div className="about-container" style={{ maxWidth: '800px', margin: '0 auto' }}>
     <main className="main-content" style={{ background: '#fffbf0', minHeight: '100vh' }}>
 
       {/* ── Hero ── */}
@@ -226,6 +227,7 @@ function HomePage() {
       </div>
 
     </main>
+  </div>
   );
 }
 
