@@ -32,7 +32,7 @@ function HomePage() {
         overflow: 'hidden',
         borderRadius: '20px',
         maxWidth: '860px',
-        margin: '0 auto',
+        margin: 'auto',
         boxShadow: '0 8px 32px rgba(255,152,0,0.20)',
       }}>
         {/* decorative circles */}
